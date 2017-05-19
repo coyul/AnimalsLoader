@@ -14,6 +14,7 @@ import java.util.Random;
 public class AnimalLoader extends AsyncTaskLoader<Animal> {
 
     private static final String TAG = "AnimalLoader";
+    private Animal mRandomAnimal = null;
 
     public AnimalLoader(Context context) {
         super(context);
@@ -28,16 +29,20 @@ public class AnimalLoader extends AsyncTaskLoader<Animal> {
 
     @Override
     public Animal loadInBackground() {
-
         Log.e(TAG, "loadInBackground");
         List<Animal> animalList = AnimalGenerator.provideAnimal();
-        return getRandomAnimal(animalList);
+        mRandomAnimal = getRandomAnimal(animalList);
+        return mRandomAnimal;
     }
 
 
-    public Animal getRandomAnimal(List<Animal> list){
-
-        int index = new Random().nextInt(list.size());
-        return list.get(index);
+    private Animal getRandomAnimal(List<Animal> list) {
+        Animal result;
+        while (true) {
+            int index = new Random().nextInt(list.size());
+            result = list.get(index);
+            if (mRandomAnimal != result) break;
+        }
+        return result;
     }
 }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.sberbank.animalsloader.MainActivity"
-    android:orientation="vertical">
+    >
 
     <TextView
         android:id="@+id/species"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size"
         android:padding="@dimen/text_padding"
-        android:layout_below="@+id/species"
+        android:layout_toRightOf="@+id/species"
         tools:text="Vaska" />
     <TextView
         android:id="@+id/age"

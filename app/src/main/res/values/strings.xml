@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AnimalsLoader</string>
     <string name="refresh_button">Refresh</string>
+
+    <string name="age_format">%1$s year old</string>
+    <string name="location_format">Lives in %1$s</string>
 </resources>

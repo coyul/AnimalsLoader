@@ -16,7 +16,7 @@ public class AnimalGenerator {
         animals.add(new Animal("Deer","DeerOne",10,"Forest"));
         animals.add(new Animal("Fish","Pups",2,"Water"));
         animals.add(new Animal("StrangeAnimal","Noname",0,"???"));
-        animals.add(new Animal("Tiget","Tiger",1,"Desert"));
+        animals.add(new Animal("Tiger","Tiger",1,"Desert"));
         animals.add(new Animal("Bear","Misha",20,"Russia"));
         animals.add(new Animal("new Animal()","JavaAnimal",1,"Programm"));
         animals.add(new Animal("Bird","Birdie",5,"Sky"));

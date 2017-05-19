@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.e(TAG, "on load finished");
             mSpeciesView.setText(data.getmSpecies());
             mNameView.setText(data.getmName());
-            mAgeView.setText(String.valueOf(data.getmAge()));
-            mLocationView.setText(data.getmLocation());
+            mAgeView.setText(getString(R.string.age_format, String.valueOf(data.getmAge())));
+            mLocationView.setText(getString(R.string.location_format, data.getmLocation()));
 
             mRelativeLayout.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);
