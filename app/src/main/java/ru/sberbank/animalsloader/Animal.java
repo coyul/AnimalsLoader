@@ -1,35 +1,31 @@
 package ru.sberbank.animalsloader;
 
-/**
- * Created by User22 on 18.05.2017.
- */
-
 public class Animal {
     private String mSpecies;
     private String mName;
     private int mAge;
     private String mLocation;
 
-    public Animal(String mSpecies, String mName, int mAge, String location) {
-        this.mSpecies = mSpecies;
-        this.mName = mName;
-        this.mAge = mAge;
+    public Animal(String species, String name, int age, String location) {
+        this.mSpecies = species;
+        this.mName = name;
+        this.mAge = age;
         this.mLocation = location;
     }
 
-    public String getmSpecies() {
+    public String getSpecies() {
         return mSpecies;
     }
 
-    public String getmName() {
+    public String getName() {
         return mName;
     }
 
-    public int getmAge() {
+    public int getAge() {
         return mAge;
     }
 
-    public String getmLocation() {
+    public String getLocation() {
         return mLocation;
     }
 
@@ -41,20 +37,20 @@ public class Animal {
 
         Animal animal = (Animal) o;
 
-        if (getmAge() != animal.getmAge()) return false;
-        if (!getmSpecies().equals(animal.getmSpecies())) return false;
-        if (getmName() != null ? !getmName().equals(animal.getmName()) : animal.getmName() != null)
+        if (getAge() != animal.getAge()) return false;
+        if (!getSpecies().equals(animal.getSpecies())) return false;
+        if (getName() != null ? !getName().equals(animal.getName()) : animal.getName() != null)
             return false;
-        return getmLocation() != null ? getmLocation().equals(animal.getmLocation()) : animal.getmLocation() == null;
+        return getLocation() != null ? getLocation().equals(animal.getLocation()) : animal.getLocation() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = getmSpecies().hashCode();
-        result = 31 * result + (getmName() != null ? getmName().hashCode() : 0);
-        result = 31 * result + getmAge();
-        result = 31 * result + (getmLocation() != null ? getmLocation().hashCode() : 0);
+        int result = getSpecies().hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + getAge();
+        result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
         return result;
     }
 }

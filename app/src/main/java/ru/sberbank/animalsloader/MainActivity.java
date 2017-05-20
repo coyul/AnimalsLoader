@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar mProgressBar;
     private RelativeLayout mRelativeLayout;
 
-    private static int LOADER_ID = 1;
+    private static final int LOADER_ID = 1;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -44,10 +44,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        mRelativeLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
     }
 
-    private class AnimalsLoaderCallBacks implements LoaderManager.LoaderCallbacks<Animal>{
+    private class AnimalsLoaderCallBacks implements LoaderManager.LoaderCallbacks<Animal> {
 
         @Override
         public Loader onCreateLoader(int id, Bundle args) {
@@ -57,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onLoadFinished(Loader loader, Animal data) {
             Log.e(TAG, "on load finished");
-            mSpeciesView.setText(data.getmSpecies());
-            mNameView.setText(data.getmName());
-            mAgeView.setText(getString(R.string.age_format, String.valueOf(data.getmAge())));
-            mLocationView.setText(getString(R.string.location_format, data.getmLocation()));
+            mSpeciesView.setText(data.getSpecies());
+            mNameView.setText(data.getName());
+            mAgeView.setText(getString(R.string.age_format, String.valueOf(data.getAge())));
+            mLocationView.setText(getString(R.string.location_format, data.getLocation()));
 
             mRelativeLayout.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);

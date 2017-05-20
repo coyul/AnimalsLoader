@@ -7,17 +7,14 @@ import android.util.Log;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by User22 on 18.05.2017.
- */
-
 public class AnimalLoader extends AsyncTaskLoader<Animal> {
 
     private static final String TAG = "AnimalLoader";
-    private Animal mRandomAnimal = null;
+    private Random random;
 
     public AnimalLoader(Context context) {
         super(context);
+        random = new Random();
     }
 
     @Override
@@ -30,19 +27,7 @@ public class AnimalLoader extends AsyncTaskLoader<Animal> {
     @Override
     public Animal loadInBackground() {
         Log.e(TAG, "loadInBackground");
-        List<Animal> animalList = AnimalGenerator.provideAnimal();
-        mRandomAnimal = getRandomAnimal(animalList);
-        return mRandomAnimal;
-    }
-
-
-    private Animal getRandomAnimal(List<Animal> list) {
-        Animal result;
-        while (true) {
-            int index = new Random().nextInt(list.size());
-            result = list.get(index);
-            if (mRandomAnimal != result) break;
-        }
-        return result;
+        List<Animal> animalList = AnimalGenerator.provideAnimals();
+        return AnimalGenerator.getRandomAnimal(animalList, random);
     }
 }
