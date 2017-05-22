@@ -5,21 +5,21 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.List;
 
-    private TextView mSpeciesView;
-    private TextView mNameView;
-    private TextView mAgeView;
-    private TextView mLocationView;
-    private Button mRefreshButton;
+public class MainActivity extends AppCompatActivity {
+
+    private AnimalStorage mAnimalStorage;
+    private AnimalAdapter mAnimalAdapter;
+
     private ProgressBar mProgressBar;
-    private RelativeLayout mRelativeLayout;
+    private ListView mListView;
 
     private static final int LOADER_ID = 1;
     private static final String TAG = "MainActivity";
@@ -29,53 +29,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSpeciesView = (TextView) findViewById(R.id.species);
-        mNameView = (TextView) findViewById(R.id.name);
-        mAgeView = (TextView) findViewById(R.id.age);
-        mLocationView = (TextView) findViewById(R.id.location);
-        mRefreshButton = (Button) findViewById(R.id.refresh_button);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
+        AnimalStorageProvider provider = (AnimalStorageProvider) getApplication();
+        mAnimalStorage = provider.getAnimalStorage();
 
-        mRefreshButton.setOnClickListener(this);
+        mAnimalAdapter = new AnimalAdapter();
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mListView = (ListView) findViewById(R.id.list_view);
+        mListView.setAdapter(mAnimalAdapter);
+
         getSupportLoaderManager().initLoader(LOADER_ID, null, new AnimalsLoaderCallBacks());
     }
 
-
     @Override
-    public void onClick(View v) {
-        mRelativeLayout.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.animal_menu, menu);
+        return true;
     }
 
-    private class AnimalsLoaderCallBacks implements LoaderManager.LoaderCallbacks<Animal> {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean handled = false;
+        switch (item.getItemId()) {
+            case R.id.add_animal_menu_item: {
+                startActivity(AnimalAddActivity.newIntent(this));
+                break;
+            }
+            default: {
+                handled = super.onOptionsItemSelected(item);
+                break;
+            }
+        }
+        return handled;
+    }
+
+
+    private class AnimalsLoaderCallBacks implements LoaderManager.LoaderCallbacks<List<Animal>> {
 
         @Override
-        public Loader onCreateLoader(int id, Bundle args) {
-            return new AnimalLoader(MainActivity.this);
+        public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
+            return new AnimalLoader(MainActivity.this, mAnimalStorage);
         }
 
         @Override
-        public void onLoadFinished(Loader loader, Animal data) {
-            Log.e(TAG, "on load finished");
-            mSpeciesView.setText(data.getSpecies());
-            mNameView.setText(data.getName());
-            mAgeView.setText(getString(R.string.age_format, String.valueOf(data.getAge())));
-            mLocationView.setText(getString(R.string.location_format, data.getLocation()));
+        public void onLoadFinished(Loader<List<Animal>> loader, List<Animal> data) {
+            mAnimalAdapter.setUpAdapter(data);
 
-            mRelativeLayout.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);
-
-
+            Log.e(TAG, "onLoadFinished");
         }
 
         @Override
-        public void onLoaderReset(Loader loader) {
-            Log.e(TAG, "on load reset");
-            mRelativeLayout.setVisibility(View.GONE);
+        public void onLoaderReset(Loader<List<Animal>> loader) {
+            mListView.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.VISIBLE);
+            Log.e(TAG, "onLoaderReset");
         }
     }
 }
