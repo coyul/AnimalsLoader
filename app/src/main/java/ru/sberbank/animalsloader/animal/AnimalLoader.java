@@ -1,12 +1,12 @@
-package ru.sberbank.animalsloader;
+package ru.sberbank.animalsloader.animal;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import java.util.List;
-import java.util.Random;
+
+import ru.sberbank.animalsloader.OnListChangeListener;
 
 public class AnimalLoader extends AsyncTaskLoader <List<Animal>> implements OnListChangeListener {
 
@@ -54,6 +54,16 @@ public class AnimalLoader extends AsyncTaskLoader <List<Animal>> implements OnLi
 
     @Override
     public void onAnimalAdded() {
+        onContentChanged();
+    }
+
+    @Override
+    public void onAnimalDeleted() {
+        onContentChanged();
+    }
+
+    @Override
+    public void onAnimalUpdated() {
         onContentChanged();
     }
 }

@@ -1,19 +1,29 @@
-package ru.sberbank.animalsloader;
+package ru.sberbank.animalsloader.activities;
 
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import ru.sberbank.animalsloader.animal.Animal;
+import ru.sberbank.animalsloader.animal.AnimalAdapter;
+import ru.sberbank.animalsloader.animal.AnimalLoader;
+import ru.sberbank.animalsloader.animal.AnimalStorage;
+import ru.sberbank.animalsloader.animal.AnimalStorageProvider;
+import ru.sberbank.animalsloader.R;
+
+public class AnimalListActivity extends AppCompatActivity {
 
     private AnimalStorage mAnimalStorage;
     private AnimalAdapter mAnimalAdapter;
@@ -22,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
 
     private static final int LOADER_ID = 1;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "AnimalListActivity";
+    private static final String ANIMAL_DATA = "animalToUpdate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mListView = (ListView) findViewById(R.id.list_view);
         mListView.setAdapter(mAnimalAdapter);
+        registerForContextMenu(mListView);
 
         getSupportLoaderManager().initLoader(LOADER_ID, null, new AnimalsLoaderCallBacks());
     }
@@ -62,12 +74,35 @@ public class MainActivity extends AppCompatActivity {
         return handled;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.animal_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+
+        switch (item.getItemId()) {
+            case R.id.menu_update:
+                Intent intent = AnimalUpdateActivity.newIntent(this);
+                intent.putExtra(ANIMAL_DATA, mAnimalAdapter.getItem(position));
+                startActivity(intent);
+                break;
+            case R.id.menu_delete:
+                mAnimalStorage.deleteAnimal(mAnimalAdapter.getItem(position));
+                break;
+        }
+        return true;
+    }
 
     private class AnimalsLoaderCallBacks implements LoaderManager.LoaderCallbacks<List<Animal>> {
 
         @Override
         public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
-            return new AnimalLoader(MainActivity.this, mAnimalStorage);
+            return new AnimalLoader(AnimalListActivity.this, mAnimalStorage);
         }
 
         @Override

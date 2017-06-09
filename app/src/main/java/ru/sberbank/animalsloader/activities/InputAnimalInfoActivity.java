@@ -1,9 +1,5 @@
-package ru.sberbank.animalsloader;
+package ru.sberbank.animalsloader.activities;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -13,34 +9,47 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AnimalAddActivity extends AppCompatActivity {
-    private AnimalStorage mAnimalsStorage;
+import ru.sberbank.animalsloader.R;
+import ru.sberbank.animalsloader.animal.Animal;
+import ru.sberbank.animalsloader.animal.AnimalStorage;
+import ru.sberbank.animalsloader.animal.AnimalStorageProvider;
 
-    private TextInputLayout mSpeciesTextInput;
-    private EditText mSpeciesEditText;
-    private TextInputLayout mNameTextInput;
-    private EditText mNameEditText;
-    private TextInputLayout mAgeTextInput;
-    private EditText mAgeEditText;
-    private TextInputLayout mLocationTextInput;
-    private EditText mLocationEditText;
 
-    private Button mAddButton;
-    private EditText[] mEditTexts;
+public abstract class InputAnimalInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, AnimalAddActivity.class);
-        return intent;
-    }
+    protected AnimalStorage mAnimalsStorage;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected TextInputLayout mSpeciesTextInput;
+    protected EditText mSpeciesEditText;
+    protected TextInputLayout mNameTextInput;
+    protected EditText mNameEditText;
+    protected TextInputLayout mAgeTextInput;
+    protected EditText mAgeEditText;
+    protected TextInputLayout mLocationTextInput;
+    protected EditText mLocationEditText;
+
+    protected Button mOnChangeButton;
+    protected EditText[] mEditTexts;
+
+    protected abstract void setUpTextInViews();
+
+    protected void onCreateActivity() {
+
         AnimalStorageProvider provider = (AnimalStorageProvider) getApplication();
         mAnimalsStorage = provider.getAnimalStorage();
 
         setContentView(R.layout.activity_add);
+        setUpViews();
+        setUpTextInViews();
+        mOnChangeButton.setOnClickListener(this);
 
+        mEditTexts = new EditText[]{mSpeciesEditText, mNameEditText, mAgeEditText, mLocationEditText};
+        for (EditText editText : mEditTexts) {
+            editText.addTextChangedListener(new TextWatcherImpl());
+        }
+    }
+
+    protected void setUpViews() {
         mSpeciesTextInput = (TextInputLayout) findViewById(R.id.species_text_input);
         mSpeciesEditText = (EditText) findViewById(R.id.species_edit_text);
         mNameTextInput = (TextInputLayout) findViewById(R.id.name_text_input);
@@ -49,41 +58,25 @@ public class AnimalAddActivity extends AppCompatActivity {
         mAgeEditText = (EditText) findViewById(R.id.age_edit_text);
         mLocationTextInput = (TextInputLayout) findViewById(R.id.location_text_input);
         mLocationEditText = (EditText) findViewById(R.id.location_edit_text);
-
-        mAddButton = (Button) findViewById(R.id.add_animal_button);
-        mEditTexts = new EditText[]{mSpeciesEditText, mNameEditText, mAgeEditText, mLocationEditText};
-        for (EditText editText : mEditTexts) {
-            editText.addTextChangedListener(new TextWatcherImpl());
-        }
-
-        mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createAnimal();
-            }
-        });
+        mOnChangeButton = (Button) findViewById(R.id.confirm_button);
     }
 
-    private void createAnimal() {
+    protected Animal getAnimalFromCurrentData(){
         String species = mSpeciesEditText.getText().toString();
         String name = mNameEditText.getText().toString();
         int age = Integer.valueOf(mAgeEditText.getText().toString());
         String location = mLocationEditText.getText().toString();
-        Animal animal = new Animal(species, name, age, location);
-        mAnimalsStorage.addAnimal(animal);
-        finish();
+        return new Animal(species, name, age, location);
     }
 
-    private class TextWatcherImpl implements TextWatcher {
+    protected class TextWatcherImpl implements TextWatcher {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
         }
 
         @Override
@@ -95,7 +88,7 @@ public class AnimalAddActivity extends AppCompatActivity {
                     break;
                 }
             }
-            mAddButton.setEnabled(buttonEnabled);
+            mOnChangeButton.setEnabled(buttonEnabled);
         }
     }
 }

@@ -1,14 +1,17 @@
-package ru.sberbank.animalsloader;
+package ru.sberbank.animalsloader.animal;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.sberbank.animalsloader.R;
 
 public class AnimalAdapter extends BaseAdapter {
     private List<Animal> mAnimals;
@@ -23,7 +26,7 @@ public class AnimalAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Animal getItem(int position) {
         return mAnimals.get(position);
     }
 
@@ -33,7 +36,7 @@ public class AnimalAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         View view = convertView;
         if( view == null){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.animal_list_item, parent, false);
