@@ -14,7 +14,7 @@ public class AnimalUpdateActivity extends InputAnimalInfoActivity {
     private static final String TAG = "AnimalAddActivity";
     private static final String ANIMAL_DATA = "animalToUpdate";
 
-    private static Animal mUpdatingAnimal;
+    private Animal mUpdatingAnimal;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, AnimalUpdateActivity.class);

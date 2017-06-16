@@ -9,7 +9,7 @@ import ru.sberbank.animalsloader.db.SQLLiteAnimalsDao;
 
 public class AnimalApplication extends Application implements AnimalStorageProvider {
 
-    AnimalStorage mAnimalStorage;
+    private AnimalStorage mAnimalStorage;
 
     @Override
     public void onCreate() {
