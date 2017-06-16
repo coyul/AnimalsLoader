@@ -8,7 +8,7 @@ import java.util.List;
 
 import ru.sberbank.animalsloader.OnListChangeListener;
 
-public class AnimalLoader extends AsyncTaskLoader <List<Animal>> implements OnListChangeListener {
+public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements OnListChangeListener {
 
     private static final String TAG = "AnimalLoader";
     private AnimalStorage mAnimalStorage;
@@ -53,17 +53,17 @@ public class AnimalLoader extends AsyncTaskLoader <List<Animal>> implements OnLi
     }
 
     @Override
-    public void onAnimalAdded() {
+    public void onAnimalAdded(AnimalStorage sender, Animal animal) {
         onContentChanged();
     }
 
     @Override
-    public void onAnimalDeleted() {
+    public void onAnimalDeleted(AnimalStorage sender, Animal animal) {
         onContentChanged();
     }
 
     @Override
-    public void onAnimalUpdated() {
+    public void onAnimalUpdated(AnimalStorage sender, Animal animal) {
         onContentChanged();
     }
 }

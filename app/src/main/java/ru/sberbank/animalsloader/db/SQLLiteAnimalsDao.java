@@ -17,7 +17,7 @@ public class SQLLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
     private static final String TAG = "SQLLiteAnimalsDao";
 
     private static final String NAME = "animals.db";
-    private static final int CURRENT_VERSION = 1;
+    public static final int CURRENT_VERSION = 1;
     private static final int NO_ID = -1;
 
     public static final String TABLE_NAME = "animals";
@@ -161,7 +161,6 @@ public class SQLLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
 
         Log.e(TAG, "CREATE completed");
         db.execSQL(sql);
-
     }
 
     @Override

@@ -85,4 +85,16 @@ public class Animal implements Serializable {
         result = 31 * result + (mLocation != null ? mLocation.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Animal{");
+        sb.append("mID=").append(mID);
+        sb.append(", mSpecies='").append(mSpecies).append('\'');
+        sb.append(", mName='").append(mName).append('\'');
+        sb.append(", mAge=").append(mAge);
+        sb.append(", mLocation='").append(mLocation).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

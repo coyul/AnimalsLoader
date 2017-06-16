@@ -24,21 +24,21 @@ public class AnimalStorage {
     public void addAnimal(Animal animal) {
         mAnimalsDao.insertAnimal(animal);
         for (OnListChangeListener listener : mOnListChangeListenerList) {
-            listener.onAnimalAdded();
+            listener.onAnimalAdded(this, animal);
         }
     }
 
     public void deleteAnimal(Animal animal) {
         mAnimalsDao.delete(animal);
         for (OnListChangeListener listener : mOnListChangeListenerList) {
-            listener.onAnimalDeleted();
+            listener.onAnimalDeleted(this, animal);
         }
     }
 
     public void updateAnimal(Animal animal) {
         mAnimalsDao.update(animal);
         for (OnListChangeListener listener : mOnListChangeListenerList) {
-            listener.onAnimalUpdated();
+            listener.onAnimalUpdated(this, animal);
         }
     }
 
