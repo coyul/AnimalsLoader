@@ -90,8 +90,6 @@ public class SQLLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         try {
             ContentValues values = createValuesFromAnimals(animal);
             Log.e(TAG, "UPDATE values " + values.get(AnimalsContract.Animals.SPECIES));
-
-
             output = db.update(TABLE_NAME, values, whereClause, whereArgs);
             db.setTransactionSuccessful();
         } finally {

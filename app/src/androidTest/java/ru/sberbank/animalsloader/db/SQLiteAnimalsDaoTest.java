@@ -38,7 +38,7 @@ public class SQLiteAnimalsDaoTest {
     public void testInsert() {
         Animal animal = EntitiesGenerator.createRandomAnimal(false);
         long id = mDaoRule.getSQLLiteAnimalsDao().insertAnimal(animal);
-        assertThat(true, is(id > 0));
+        assertThat(true, is(id > -1));
     }
 
     @Test
@@ -76,7 +76,11 @@ public class SQLiteAnimalsDaoTest {
     public void testOnCreateDB() {
         SQLiteDatabase db = mDaoRule.getSQLLiteAnimalsDao().getReadableDatabase();
         assertThat(true, is(db.isOpen()));
+
         Cursor cursor = db.query(SQLLiteAnimalsDao.TABLE_NAME, null, null, null, null, null, null);
+
+        int expectedColumnCount = 5;
+        assertThat(cursor.getColumnCount(), is(expectedColumnCount));
 
         assertThat(cursor.getColumnName(0), is(AnimalsContract.Animals._ID));
         assertThat(cursor.getColumnName(1), is(AnimalsContract.Animals.SPECIES));
